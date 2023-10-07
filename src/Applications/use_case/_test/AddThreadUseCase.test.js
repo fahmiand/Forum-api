@@ -9,13 +9,13 @@ describe('AddThreadUseCase', () => {
     const UseCasePayload = {
       title: 'a thread',
       body: 'thread body ini',
-      owner: 'user-123'
+      owner: 'user-123',
+      date: '2023-10-6'
     }
 
-    const mockAddedThread = new AddedThread({
-      id: 'thread-123',
+    const expectedAddedThread = new AddedThread({
+      id: 'thread-h_123',
       title: UseCasePayload.title,
-      body: UseCasePayload.body,
       owner: UseCasePayload.owner
     })
 
@@ -23,26 +23,22 @@ describe('AddThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository()
 
     /** mocking needed function */
-
-    mockThreadRepository.verifyAvailableThread = jest.fn()
-      .mockImplementation(() => Promise.resolve())
     mockThreadRepository.addThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAddedThread))
+      .mockImplementation(() => Promise.resolve(expectedAddedThread))
 
     /** creating use case instance */
     const getThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository
     })
 
-    console.log(UseCasePayload)
-
     const addedThread = await getThreadUseCase.execute(UseCasePayload)
 
-    expect(addedThread).toStrictEqual(mockAddedThread)
+    expect(addedThread).toStrictEqual(expectedAddedThread)
     expect(mockThreadRepository.addThread).toBeCalledWith(new AddThread({
       title: UseCasePayload.title,
       body: UseCasePayload.body,
-      owner: UseCasePayload.owner
+      owner: UseCasePayload.owner,
+      date: UseCasePayload.date
     }))
   })
 })

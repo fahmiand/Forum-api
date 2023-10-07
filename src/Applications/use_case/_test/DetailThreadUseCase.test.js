@@ -4,7 +4,7 @@ const ThreadRepository = require('../../../Domains/thread/ThreadRepository')
 describe('DetailThreadUseCase', () => {
   it('should get return detail thread', async () => {
     const useCasePayload = {
-      thread: 'thread-123'
+      thread: 'thread-h_123'
     }
 
     // const expectedThread = {
@@ -19,7 +19,7 @@ describe('DetailThreadUseCase', () => {
 
     mockThreadRepository.verifyAvailableThread = jest.fn(() => Promise.resolve())
     mockThreadRepository.getDetailThread = jest.fn()
-      .mockImplementation(() => Promise.resolve('thread-123'))
+      .mockImplementation(() => Promise.resolve('thread-h_123'))
 
     const detailThreadUseCase = new DetailThreaduseCase({
       threadRepository: mockThreadRepository
@@ -28,6 +28,6 @@ describe('DetailThreadUseCase', () => {
     const detailThread = await detailThreadUseCase.execute(useCasePayload)
 
     expect(mockThreadRepository.getDetailThread).toBeCalledWith(useCasePayload)
-    expect(detailThread).toStrictEqual('thread-123')
+    expect(detailThread).toStrictEqual('thread-h_123')
   })
 })

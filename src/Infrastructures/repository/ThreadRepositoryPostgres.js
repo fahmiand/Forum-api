@@ -11,7 +11,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async addThread (addThread) {
     const { title, body, owner } = addThread
-    const id = `thread-${this._idGenerator()}`
+    const id = `thread-h_${this._idGenerator()}`
 
     const createAt = new Date().toISOString()
     const updateAt = createAt
@@ -34,7 +34,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     const result = await this._pool.query(query)
 
-    if (result.rowCount === 0) {
+    if (result.rowCount) {
       throw new NotFoundError('id tidak ditemukan!')
     }
   }

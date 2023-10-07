@@ -1,23 +1,55 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper')
-// const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper')
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper')
 const pool = require('../../database/postgres/pool')
 const AddThread = require('../../../Domains/thread/entities/AddThread')
-const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres')
 const AddedThread = require('../../../Domains/thread/entities/AddedThread')
+const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres')
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError')
 
 describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
-    // await UsersTableTestHelper.cleanTable()
     await ThreadsTableTestHelper.cleanTable()
+    await CommentsTableTestHelper.cleanTable()
+    await UsersTableTestHelper.cleanTable()
   })
 
   afterAll(async () => {
     await pool.end()
   })
 
+  describe('verifyAvailableThread function', () => {
+    it('should throw InvariantError when thread not available', async () => {
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
+
+      await expect(threadRepositoryPostgres.verifyAvailableThread('xxx')).resolves.not.toThrowError(NotFoundError)
+    })
+
+    it('should not throw InvarianError when thread available', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'fahmi',
+        password: 'fahmi'
+      })
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread_h-123',
+        title: 'sebuah thread',
+        body: 'sebuah thread',
+        owner: 'user-123'
+      })
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
+
+      await expect(threadRepositoryPostgres.verifyAvailableThread('thread_h-123')).rejects.toThrowError(NotFoundError)
+    })
+  })
+
   describe('addThread function', () => {
     it('should persist add tread', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'fahmi',
+        password: 'fahmi'
+      })
       const addThread = new AddThread({
         title: 'thread title',
         body: 'thread body',
@@ -29,11 +61,16 @@ describe('ThreadRepositoryPostgres', () => {
 
       await threadRepositoryPostgres.addThread(addThread)
 
-      const thread = await ThreadsTableTestHelper.findThreadById('thread-1234')
+      const thread = await ThreadsTableTestHelper.findThreadById('thread-h_1234')
       expect(thread).toHaveLength(1)
     })
 
     it('should return added thread correctly', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'fahmi',
+        password: 'fahmi'
+      })
       const addThread = new AddThread({
         title: 'thread title',
         body: 'thread body',
@@ -46,19 +83,11 @@ describe('ThreadRepositoryPostgres', () => {
       const addedThreade = await threadRepositoryPostgres.addThread(addThread)
 
       expect(addedThreade).toStrictEqual(new AddedThread({
-        id: 'thread-123',
+        id: 'thread-h_123',
         title: 'thread title',
         body: 'thread body',
         owner: 'user-123'
       }))
-    })
-  })
-
-  describe('verifyAvailability function', () => {
-    it('should throw NotFoundError if thread not available', async () => {
-      const threadRepositorypostgres = new ThreadRepositoryPostgres(pool, {})
-
-      await expect(threadRepositorypostgres.verifyAvailableThread('adc')).rejects.toThrow(NotFoundError)
     })
   })
 })

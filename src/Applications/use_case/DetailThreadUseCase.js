@@ -7,6 +7,7 @@ class DetailThreadUseCase {
 
   async execute (useCasePayload) {
     const detailThread = new DetailThread(useCasePayload)
+    this._threadRepository.verifyAvailableThread(useCasePayload)
     return this._threadRepository.getDetailThread(detailThread)
   }
 }

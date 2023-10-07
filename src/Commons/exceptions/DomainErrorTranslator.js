@@ -1,4 +1,3 @@
-const AuthenticationError = require('./AuthenticationError')
 const InvariantError = require('./InvariantError')
 
 const DomainErrorTranslator = {
@@ -20,11 +19,15 @@ DomainErrorTranslator._directories = {
   'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
   'ADD_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat thread baru karena property yang dibutuhkan tidak ada'),
   'ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai'),
-  'ADD_THREAD.TITLE_LIMIT_CHAR': new InvariantError('tidak dapat memuat thread baru karena title melebihi batas limit'),
-  'ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new AuthenticationError('tidak dapat mengakses.'),
-  'ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new AuthenticationError('tidak bisa mengakses'),
-  'DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new AuthenticationError('gagal'),
-  'DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new AuthenticationError('gagal')
+  'ADD_THREAD.TITLE_LIMIT_CHAR': new InvariantError('tidak dapat membuat thread baru karena title melebihi batas limit'),
+  'ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat thread baru karena property yang dibutuhkan tidak ada'),
+  'ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat thread baru karena tipe data tidak sesuai'),
+  'DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat melihat user baru property yang dibutuhkan tidak ada'),
+  'DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat melihat user baru karena tipe data tidak sesuai'),
+  'ADD_COMMENT.NOT_CONTAIN_PROPERTY': new InvariantError('tidak dapat membuat comment baru karena property yang dibutuhkan tidak ada'),
+  'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai'),
+  'ADDED_COMMENT.NOT_CONTAIN_PROPERTY': new InvariantError('tidak dapat membuat comment baru karena property yang dibutuhkan tidak ada'),
+  'ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai')
 }
 
 module.exports = DomainErrorTranslator

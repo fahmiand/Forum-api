@@ -6,12 +6,15 @@ const routes = (handler) => ([
     options: {
       auth: 'forumapi_jwt'
     }
+  },
+  {
+    method: 'GET',
+    path: '/threads/{threadId}',
+    handler: handler.getThreadByIdHandler,
+    options: {
+      auth: 'forumapi_jwt'
+    }
   }
-  // {
-  //   method: 'GET',
-  //   path: '/threads/{threadId}',
-  //   handler: hendler.getThreadByIdHandler
-  // }
 ])
 
 module.exports = routes

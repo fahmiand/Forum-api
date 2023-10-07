@@ -7,7 +7,7 @@ describe('detailThread entities', () => {
       thread: ''
     }
 
-    expect(() => new DetailThread(payload)).toThrowError('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
+    expect(() => new DetailThread(payload)).toThrowError('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY')
   })
 
   it('should throw error when payloaad did not meet data type specification', () => {
@@ -16,7 +16,7 @@ describe('detailThread entities', () => {
       thread: 123
     }
 
-    expect(() => new DetailThread(payload)).toThrowError('DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
+    expect(() => new DetailThread(payload)).toThrowError('DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION')
   })
 
   it('should create detailThread object correctly', () => {
