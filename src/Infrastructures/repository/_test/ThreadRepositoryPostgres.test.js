@@ -19,10 +19,10 @@ describe('ThreadRepositoryPostgres', () => {
   })
 
   describe('verifyAvailableThread function', () => {
-    it('should throw InvariantError when thread not available', async () => {
+    it('should throw NotFoundError when thread not available', async () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
 
-      await expect(threadRepositoryPostgres.verifyAvailableThread('xxx')).resolves.not.toThrowError(NotFoundError)
+      await expect(threadRepositoryPostgres.verifyAvailableThread('xxx')).rejects.toThrow(NotFoundError)
     })
 
     it('should not throw InvarianError when thread available', async () => {
@@ -39,7 +39,7 @@ describe('ThreadRepositoryPostgres', () => {
       })
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
 
-      await expect(threadRepositoryPostgres.verifyAvailableThread('thread_h-123')).rejects.toThrowError(NotFoundError)
+      await expect(threadRepositoryPostgres.verifyAvailableThread('thread_h-123')).resolves.not.toThrowError(NotFoundError)
     })
   })
 

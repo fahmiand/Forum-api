@@ -1,11 +1,11 @@
 class DetailComment {
   constructor (payload) {
     this._verifyPayload(payload)
-    const { comment } = payload
+    const comment = payload
     this.comment = comment
   }
 
-  _verifyPayload ({ comment }) {
+  _verifyPayload (comment) {
     if (!comment) {
       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY')
     }

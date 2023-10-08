@@ -25,16 +25,38 @@ class CommentRepositoryPostgres extends CommentRepository {
     return new AddedComment(result.rows[0])
   }
 
-  async verifyAvailableComment (id) {
+  async verifycomment (commentId) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1',
-      values: [id]
+      values: [commentId]
     }
-
     const result = await this._pool.query(query)
-    if (result.rowCount === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('id tidak ditemukan')
     }
+  }
+
+  async verifyCommentAtThread (commentId, threadId) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1 AND thread = $2',
+      values: [commentId, threadId]
+    }
+    const result = await this._pool.query(query)
+    if (!result.rowCount) {
+      throw new NotFoundError('id tidak ditemukan')
+    }
+  }
+
+  async getCommentByThreadById (threadId) {
+    const query = {
+      text: `SELECT comments.id, comments.content, users.username
+              FROM comments
+              LEFT JOIN users ON users.id = comments.owner
+              WHERE comments.thread = $1`,
+      values: [threadId]
+    }
+    const result = await this._pool.query(query)
+    return result.rows
   }
 
   async verifyCommentOwner (commentId, owner) {
@@ -67,11 +89,11 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async deleteComment (id) {
     const query = {
-      text: 'UPDATE comments SET is_deleted = true WHERE id = $1',
+      text: 'UPDATE comments SET is_delete = true WHERE id = $1',
       values: [id]
     }
-
-    await this._pool.query(query)
+    const result = await this._pool.query(query)
+    return result.rows[0]
   }
 }
 

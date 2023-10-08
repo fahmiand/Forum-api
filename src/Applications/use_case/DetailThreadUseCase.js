@@ -1,5 +1,4 @@
 const DetailThread = require('../../Domains/thread/entities/DetailThread')
-const DetailComment = require('../../Domains/comment/entities/DetailComment')
 
 class DetailThreadUseCase {
   constructor ({ threadRepository, commentRepository }) {
@@ -8,13 +7,14 @@ class DetailThreadUseCase {
   }
 
   async execute (useCasePayload) {
+    const { threadId } = useCasePayload
+    await this._threadRepository.verifyAvailableThread(threadId)
     const thread = new DetailThread(useCasePayload)
-    await this._threadRepository.verifyAvailableThread(thread)
-    const detailThread = this._threadRepository.getDetailThread(thread)
-    const detailComment = await this._commentRepositorey.getCommentThread(thread)
-    detailThread.comment = new DetailComment({ comments: detailComment }).comment
+    const comments = await this._commentRepositorey.getCommentByThreadById(thread)
+
     return {
-      thread: detailThread
+      ...thread,
+      comments
     }
   }
 }

@@ -28,7 +28,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async verifyAvailableThread (id) {
     const query = {
-      text: 'SELECT * FROM threads WHERE id = $1',
+      text: 'SELECT id FROM threads WHERE id = $1',
       values: [id]
     }
 
@@ -40,13 +40,15 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async getDetailThread (id) {
     const query = {
-      text: 'SELECT * FROM threads WHERE id = $1',
+      text: `SELECT threads.id, title, body, create_at AS date, users.username FROM threads
+            LEFT JOIN users ON threads.owner = users.id
+            WHERE threads.id = $1`,
       values: [id]
     }
 
     const result = await this._pool.query(query)
 
-    return result.rows
+    return result.rows[0]
   }
 }
 

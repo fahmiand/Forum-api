@@ -1,36 +1,47 @@
-const DetailThreaduseCase = require('../DetailThreadUseCase')
+const DetailThreadUseCase = require('../DetailThreadUseCase')
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository')
 const CommentRepository = require('../../../Domains/comment/CommentRepository')
 
 describe('DetailThreadUseCase', () => {
   it('should get return detail thread', async () => {
-    const useCasePayload = {
-      thread: 'thread-h_123'
-    }
+    const useCasePayload = 'thread-h_123'
 
-    // const expectedThread = {
-    //   id: 'thread-h_123',
-    //   title: 'sebuah thread',
-    //   body: 'sebuah body thread',
-    //   date: '2021-08-08 14.00',
-    //   username: 'dicoding'
-    // }
+    const detailComment = [
+      {
+        id: 'comment-123',
+        username: 'username',
+        date: '2021-08-08T07:22:33.555Z',
+        content: 'comment',
+        isDelete: false
+      }
+    ]
+
+    const expectedDetailThread = {
+      id: 'thread-h_123',
+      title: 'title',
+      body: 'body',
+      date: '2021-08-08T07:22:33.555Z',
+      username: 'username'
+    }
 
     const mockThreadRepository = new ThreadRepository()
     const mockCommentRepository = new CommentRepository()
 
-    mockThreadRepository.verifyAvailableThread = jest.fn(() => Promise.resolve())
+    mockThreadRepository.verifyAvailableThread = jest.fn()
+      .mockImplementation(() => Promise.resolve())
     mockThreadRepository.getDetailThread = jest.fn()
-      .mockImplementation(() => Promise.resolve('thread-h_123'))
+      .mockImplementation(() => Promise.resolve(useCasePayload))
 
-    const detailThreadUseCase = new DetailThreaduseCase({
+    const getDetailThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository
     })
 
-    const detailThread = await detailThreadUseCase.execute(useCasePayload)
-
-    expect(mockThreadRepository.getDetailThread).toBeCalledWith(useCasePayload)
-    expect(detailThread).toStrictEqual('thread-h_123')
+    const detailThread = await getDetailThreadUseCase.execute(useCasePayload)
+    const resultCommbin = {
+      ...expectedDetailThread,
+      comments: detailComment
+    }
+    expect(resultCommbin).toEqual(detailThread)
   })
 })

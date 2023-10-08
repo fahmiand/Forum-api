@@ -2,7 +2,7 @@ class DetailThread {
   constructor (payload) {
     this._verifyPayload(payload)
 
-    const { thread } = payload
+    const thread = payload
     this.thread = thread
   }
 
