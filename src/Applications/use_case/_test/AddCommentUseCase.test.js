@@ -1,12 +1,13 @@
 const AddComment = require('../../../Domains/comment/entities/AddComment')
 const AddedComment = require('../../../Domains/comment/entities/AddedComment')
 const CommentRepository = require('../../../Domains/comment/CommentRepository')
+const ThreadRepository = require('../../../Domains/thread/ThreadRepository')
 const AddCommentUseCase = require('../AddCommentUseCase')
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add thread action correctly', async () => {
     const useCasePayload = {
-      thread: 'thread-123',
+      thread: 'thread-h_123',
       content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
       owner: 'user-123'
     }
@@ -20,6 +21,7 @@ describe('AddCommentUseCase', () => {
 
     /* creating depedenc of use case */
     const mockCommentRepository = new CommentRepository()
+    const mockThreadRepository = new ThreadRepository()
 
     /** mocking needed function */
     mockCommentRepository.verifyAvailableComment = jest.fn()
@@ -29,7 +31,8 @@ describe('AddCommentUseCase', () => {
 
     /** creating use case instance */
     const getCommentUseCase = new AddCommentUseCase({
-      commentRepository: mockCommentRepository
+      commentRepository: mockCommentRepository,
+      threadRepository: mockThreadRepository
     })
 
     const addedComment = await getCommentUseCase.execute(useCasePayload)

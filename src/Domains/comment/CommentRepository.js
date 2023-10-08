@@ -10,6 +10,10 @@ class CommentRepository {
   async getDetailComment (comment) {
     throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
+
+  async getCommentThread (thread) {
+    throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
+  }
 }
 
 module.exports = CommentRepository

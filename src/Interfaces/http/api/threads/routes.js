@@ -9,7 +9,7 @@ const routes = (handler) => ([
   },
   {
     method: 'GET',
-    path: '/threads/{threadId}',
+    path: '/threads/{id}',
     handler: handler.getThreadByIdHandler,
     options: {
       auth: 'forumapi_jwt'

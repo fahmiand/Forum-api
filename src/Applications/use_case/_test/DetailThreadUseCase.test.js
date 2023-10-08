@@ -1,5 +1,6 @@
 const DetailThreaduseCase = require('../DetailThreadUseCase')
 const ThreadRepository = require('../../../Domains/thread/ThreadRepository')
+const CommentRepository = require('../../../Domains/comment/CommentRepository')
 
 describe('DetailThreadUseCase', () => {
   it('should get return detail thread', async () => {
@@ -16,13 +17,15 @@ describe('DetailThreadUseCase', () => {
     // }
 
     const mockThreadRepository = new ThreadRepository()
+    const mockCommentRepository = new CommentRepository()
 
     mockThreadRepository.verifyAvailableThread = jest.fn(() => Promise.resolve())
     mockThreadRepository.getDetailThread = jest.fn()
       .mockImplementation(() => Promise.resolve('thread-h_123'))
 
     const detailThreadUseCase = new DetailThreaduseCase({
-      threadRepository: mockThreadRepository
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository
     })
 
     const detailThread = await detailThreadUseCase.execute(useCasePayload)

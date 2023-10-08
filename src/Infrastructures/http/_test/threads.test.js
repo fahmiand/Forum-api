@@ -106,6 +106,7 @@ describe('HTTP server', () => {
       })
 
       const responseAuth = JSON.parse(authentication.payload)
+      console.log(responseAuth.data.accessToken)
       const response = await server.inject({
         method: 'GET',
         url: '/threads/123',
@@ -156,15 +157,13 @@ describe('HTTP server', () => {
       })
 
       const responseThread = JSON.parse(thread.payload)
-      console.log(responseThread.data.addedThread.id)
+      console.log(responseThread)
       const response = await server.inject({
         method: 'GET',
-        url: `/threads/${responseThread.data.addedThread.id}`,
-        headers: { Authorization: `Bearer ${responseAuth.data.accessToken}` }
+        url: `/threads/${responseThread.data.addedThread.id}`
       })
 
       const responseJson = JSON.parse(response.payload)
-      console.log(responseJson)
       expect(response.statusCode).toEqual(200)
       expect(responseJson.message).toEqual('success')
     })

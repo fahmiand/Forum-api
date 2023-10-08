@@ -6,7 +6,7 @@ class DetailThread {
     this.thread = thread
   }
 
-  _verifyPayload ({ thread }) {
+  _verifyPayload (thread) {
     if (!thread) {
       throw new Error('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY')
     }
