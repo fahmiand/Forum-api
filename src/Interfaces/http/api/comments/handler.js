@@ -39,7 +39,6 @@ class CommentsHandler {
       threadId,
       owner
     }
-    console.log(payload)
     await commentUseCase.execute(payload)
     return {
       status: 'success'

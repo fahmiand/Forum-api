@@ -4,7 +4,9 @@ const CommentRepository = require('../../../Domains/comment/CommentRepository')
 
 describe('DetailThreadUseCase', () => {
   it('should get return detail thread', async () => {
-    const useCasePayload = 'thread-h_123'
+    const useCasePayload = {
+      id: 'thread-h_123'
+    }
 
     const detailComment = [
       {
@@ -30,7 +32,15 @@ describe('DetailThreadUseCase', () => {
     mockThreadRepository.verifyAvailableThread = jest.fn()
       .mockImplementation(() => Promise.resolve())
     mockThreadRepository.getDetailThread = jest.fn()
-      .mockImplementation(() => Promise.resolve(useCasePayload))
+      .mockImplementation(() => Promise.resolve({
+        id: 'thread-h_123',
+        title: 'title',
+        body: 'body',
+        date: '2021-08-08T07:22:33.555Z',
+        username: 'username'
+      }))
+    mockCommentRepository.getCommentByThreadById = jest.fn()
+      .mockImplementation(() => Promise.resolve(detailComment))
 
     const getDetailThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,

@@ -72,7 +72,6 @@ const createServer = async (container) => {
       // bila response tersebut error, tangani sesuai kebutuhan
       const translatedError = DomainErrorTranslator.translate(response)
 
-      // console.error(response.message)
       // penanganan client error secara internal.
       if (translatedError instanceof ClientError) {
         const newResponse = h.response({
@@ -82,12 +81,13 @@ const createServer = async (container) => {
         newResponse.code(translatedError.statusCode)
         return newResponse
       }
-
+      
       // mempertahankan penanganan client error oleh hapi secara native, seperti 404, etc.
       if (!translatedError.isServer) {
         return h.continue
       }
-
+      
+      console.error(response.message)
       // penanganan server error sesuai kebutuhan
       const newResponse = h.response({
         status: 'error',
