@@ -10,7 +10,7 @@ class DetailThreadUseCase {
     const threadId = useCasePayload
     await this._threadRepository.verifyAvailableThread(threadId)
     const thread = new DetailThread(threadId)
-    const threadcomment = new DetailComment(thread)
+    const threadcomment = new DetailComment(threadId)
     const detailThread = await this._threadRepository.getDetailThread(thread)
     const comments = await this._commentRepositorey.getCommentByThreadById(threadcomment)
 
