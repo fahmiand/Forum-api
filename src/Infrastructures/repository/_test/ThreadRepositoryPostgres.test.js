@@ -90,4 +90,27 @@ describe('ThreadRepositoryPostgres', () => {
       }))
     })
   })
+  describe('GetThread function', () => {
+    it('should return response 200', async () => {
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'fahmi'
+      })
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-h_123',
+        title: 'thread title',
+        body: 'thread body',
+        owner: 'user-123'
+      })
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {})
+      const result = await threadRepositoryPostgres.getDetailThread('thread-h_123')
+      expect(result).toStrictEqual({
+        id: 'thread-h_123',
+        title: 'thread title',
+        body: 'thread body',
+        date: expect.any(String),
+        username: 'fahmi'
+      })
+    })
+  })
 })

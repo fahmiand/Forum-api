@@ -8,8 +8,7 @@ class AddCommentUseCase {
 
   async execute (useCasePayload) {
     const addComment = new AddComment(useCasePayload)
-    const thread = useCasePayload.thread
-    await this._threadRepository.verifyAvailableThread(thread)
+    await this._threadRepository.verifyAvailableThread(addComment.thread)
     return this._commentRepository.addComment(addComment)
   }
 }

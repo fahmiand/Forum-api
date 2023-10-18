@@ -12,7 +12,8 @@ describe('detailComment entities', () => {
       id: 123,
       username: true,
       date: 123,
-      content: 123
+      content: 123,
+      is_delete: 'false'
     }
 
     expect(() => new DetailComment(payload)).toThrowError('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')
@@ -23,14 +24,39 @@ describe('detailComment entities', () => {
       id: 'comment-123',
       username: 'username',
       date: '2021-08-08T07:22:33.555Z',
-      content: 'comment'
+      content: 'comment',
+      is_delete: false
+    }
+    const payload2 = {
+      id: 'comment-124',
+      username: 'username',
+      date: '2021-08-08T07:22:33.555Z',
+      content: 'comment',
+      is_delete: true
     }
 
     const detailComment = new DetailComment(payload)
+    const detailComment2 = new DetailComment(payload2)
+    const result = [
+      detailComment,
+      detailComment2
+    ]
 
-    expect(detailComment.id).toEqual(payload.id)
-    expect(detailComment.username).toEqual(payload.username)
-    expect(detailComment.date).toEqual(payload.date)
-    expect(detailComment.content).toEqual(payload.content)
+    expect(result).toEqual([
+      {
+        id: 'comment-123',
+        username: 'username',
+        date: '2021-08-08T07:22:33.555Z',
+        content: 'comment',
+        isDelete: false
+      },
+      {
+        id: 'comment-124',
+        username: 'username',
+        date: '2021-08-08T07:22:33.555Z',
+        content: '**komentar telah dihapus**',
+        isDelete: true
+      }
+    ])
   })
 })

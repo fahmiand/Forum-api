@@ -24,7 +24,7 @@ DomainErrorTranslator._directories = {
   'ADDED_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat thread baru karena tipe data tidak sesuai'),
   'DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat melihat user baru property yang dibutuhkan tidak ada'),
   'DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat melihat user baru karena tipe data tidak sesuai'),
-  'ADD_COMMENT.NOT_CONTAIN_PROPERTY': new InvariantError('tidak dapat membuat comment baru karena property yang dibutuhkan tidak ada'),
+  'ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat comment baru karena property yang dibutuhkan tidak ada'),
   'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai'),
   'ADDED_COMMENT.NOT_CONTAIN_PROPERTY': new InvariantError('tidak dapat membuat comment baru karena property yang dibutuhkan tidak ada'),
   'ADDED_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat user baru karena tipe data tidak sesuai')

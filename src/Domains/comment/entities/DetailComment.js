@@ -1,14 +1,15 @@
 class DetailComment {
   constructor (payload) {
     this._verifyPayload(payload)
-    const { id, username, date, content } = payload
+    const { id, username, date, content, is_delete: isDelete } = payload
     this.id = id
     this.username = username
     this.date = date
-    this.content = content
+    this.content = isDelete === true ? '**komentar telah dihapus**' : content
+    this.isDelete = isDelete
   }
 
-  _verifyPayload ({ id, username, date, content }) {
+  _verifyPayload ({ id, username, date, content, is_delete: isDelete }) {
     if (!id || !username || !date || !content) {
       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY')
     }

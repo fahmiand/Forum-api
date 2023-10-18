@@ -13,7 +13,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   async addComment (addComment) {
     const { content, thread, owner } = addComment
     const id = `comment-${this._idGenerator()}`
-    const createAt = new Date().toDateString
+    const createAt = new Date().toISOString()
     const updateAt = createAt
 
     const query = {
@@ -38,7 +38,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async verifyCommentAtThread (commentId, threadId) {
     const query = {
-      text: 'SELECT * FROM comments WHERE id = $1 AND thread = $2',
+      text: 'SELECT * FROM comments WHERE id = $1 AND thread_id = $2',
       values: [commentId, threadId]
     }
     const result = await this._pool.query(query)
@@ -49,42 +49,25 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentByThreadById (threadId) {
     const query = {
-      text: `SELECT comments.id, comments.content, users.username
+      text: `SELECT comments.id, users.username, comments.created_at as date, content, is_delete 
               FROM comments
               LEFT JOIN users ON users.id = comments.owner
-              WHERE comments.thread = $1`,
+              WHERE comments.thread_id = $1`,
       values: [threadId]
     }
     const result = await this._pool.query(query)
     return result.rows
   }
 
-  async verifyCommentOwner (commentId, owner) {
+  async verifyCommentOwner (comment, owner) {
     const query = {
-      text: 'SELECT * FROM comments WHERE id = $1',
-      values: [commentId]
+      text: 'SELECT content FROM comments WHERE id = $1 AND owner = $2 ',
+      values: [comment, owner]
     }
     const result = await this._pool.query(query)
     if (!result.rowCount) {
-      throw new NotFoundError('id tidak ditemukan!')
-    }
-    const comment = result.rows[0]
-    if (comment.owner !== owner) {
       throw new AuthorizationError('anda tidak berhak mengakses ini')
     }
-  }
-
-  async getCommentThread (thread) {
-    const query = {
-      text: `SELECT comments.id, created_at as date, content, users.username
-              FROM comments
-              LEFT JOIN users.id = comments.owner
-              WHERE thread = $1
-              ORDER BY comments.created_at ASC`,
-      values: [thread]
-    }
-    const result = await this._pool.query(query)
-    return result.rows
   }
 
   async deleteComment (id) {
@@ -92,8 +75,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       text: 'UPDATE comments SET is_delete = true WHERE id = $1',
       values: [id]
     }
-    const result = await this._pool.query(query)
-    return result.rows[0]
+    await this._pool.query(query)
   }
 }
 
